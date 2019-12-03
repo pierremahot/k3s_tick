@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: tick
+  name: kapacitor-deployement
+  labels:
+    app: kapacitor
+spec:
+  selector:
+    matchLabels:
+      app: kapacitor
+  template:
+    metadata:
+      labels:
+        app: kapacitor
+    spec:
+      volumes:
+      - name: data
+        hostPath:
+          path: /var/lib/kapacitor
+          type: Directory
+      containers:
+        - name: kapacitor
+          image: kapacitor
+          ports:
+            - containerPort: 9092
+          env:
+          - name: KAPACITOR_INFLUXDB_0_URLS_0
+            value: "http://influxdb.tick.svc.cluster.local:8086"
+          - name: KAPACITOR_HOSTNAME
+            value: kapacitor
+          - name: INFLUXDB_USERNAME
+            value: "dbUser"
+          - name: INFLUXDB_password
+            value: "dbPassword"
+          - name: KAPACITOR_USERNAME
+            value: "kapacitoruser"
+          - name: KAPACITOR_PASSWORD
+            value: "kapacitoPassword"
+          volumeMounts:
+          - name: data
+            mountPath: /var/lib/kapacitor

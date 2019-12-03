@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: tick
+  name: chronograf-deployment
+  labels:
+    app: chronograf
+spec:
+  selector:
+    matchLabels:
+     app: chronograf
+  template:
+    metadata:
+      labels:
+        app: chronograf 
+    spec:
+      volumes:
+      - name: data
+        hostPath:
+          path: /var/lib/chronograf
+          type: Directory
+      containers:
+        - name: backend
+          command: ["chronograf"]
+          image: chronograf 
+          ports:
+            - containerPort: 8888
+          env:
+          - name: INFLUXDB_URL
+            value: http://influxdb.tick.svc.cluster.local:8086
+          - name: INFLUXDB_USERNAME
+            value: dbUser
+          - name: INFLUXDB_PASSWORD
+            value: dbpassword
+          - name: KAPACITOR_URL
+            value: http://kapacitor.tick.svc.cluster.local:9092
+          - name: KAPACITOR_USERNAME
+            value: kapacitorUser
+          - name: KAPACITOR_PASSWORD
+            value: 'kapacitorPassword'
+          - name: PUBLIC_URL
+            value: https://yourdnsname
+          - name: JWKS_URL
+            value: http://localhost:8888/oauth/github/callback
+          - name: TOKEN_SECRET
+            value: tocken
+          - name: GH_CLIENT_ID
+            value: id
+          - name: GH_CLIENT_SECRET
+            value: secret
+          - name: BOLT_PATH
+            value: /var/lib/chronograf/chronograf-v1.db
+          volumeMounts:
+          - name: data
+            mountPath: /var/lib/chronograf
