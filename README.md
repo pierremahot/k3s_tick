@@ -2,8 +2,8 @@
 File to set a k3s stack on raspberry pi3 b with certbot(certmanager) and github OAuth for the chronograf connexion.  
 It expose the port 80 for http challenge. A redirection to https is done too.
   
-k3s_version   v1.17.3+k3s1
-cert-manager_version v0.14.0
+k3s_version   v1.17.3+k3s1  
+cert-manager_version v0.14.0  
 
 Before installing k3s if your are using it behind a nat you have to setup dns server.  
 I use dnsmasq the conf is in dnsmasq.conf you have to change it to work with your dnsname.  
