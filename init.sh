@@ -1,4 +1,4 @@
-curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v0.11.0-alpha2 sh -
+curl -sfL https://get.k3s.io | sh -
 kubectl create namespace cert-manager
 kubectl create namespace tick
 kubectl label namespace cert-manager certmanager.k8s.io/disable-validation=true
